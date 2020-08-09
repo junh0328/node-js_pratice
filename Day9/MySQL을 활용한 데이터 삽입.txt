@@ -1,0 +1,12 @@
+-------------------------------------------- 커넥션풀 활용----------------------------------------------
+
+    console.log('loginMember 호출' + userid + userpw);
+    pool.getConnection((err, conn) =>{
+        if(err){
+            if(conn){
+                conn.release(); //에러가 났는데, 디비와 연결되어 있는 경우에는 연결을 해지한다.
+            }
+            callback(err, null);
+            //더이상 진행하지 않도록 return해준다.
+            return;
+        }

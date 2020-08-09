@@ -1,0 +1,31 @@
+Auto close Tag
+Auto Rename Tag
+Bracket Pair Colorizer
+CSS Peek
+Live server
+Prettier
+Visual Studio IntelliCode
+
+setting > json > settings.json
+
+{
+  "liveServer.settings.donotShowInfoMsg": true,
+  "editor.fontFamily": "D2Coding, 'Courier New', monospace",
+  "window.zoomLevel": 0,
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "editor.tokenColorCustomizations": {
+    "comments": "#e9a5a5"
+  },
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "editor.formatOnSave": true,
+  "prettier.singleQuote": true,
+  "launch": {
+  
+  }
+}

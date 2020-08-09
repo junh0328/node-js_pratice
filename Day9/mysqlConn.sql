@@ -1,0 +1,22 @@
+CREATE DATABASE nodedb;
+SHOW DATABASES;
+USE nodedb;
+
+CREATE TABLE member(
+	useridx INT auto_increment PRIMARY KEY,
+	userid VARCHAR(20) UNIQUE NOT NULL,
+	userpw VARCHAR(20) NOT NULL,
+	NAME VARCHAR(10) NOT NULL,
+	age INT DEFAULT 0,
+	regidate DATETIME DEFAULT NOW()
+)
+
+SHOW TABLES
+
+SELECT * FROM member;
+
+DROP TABLE member;
+USE mysql;
+
+
+
