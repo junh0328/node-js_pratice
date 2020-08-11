@@ -5,8 +5,8 @@ const mongoose = require('mongoose');
 let database = {
     // db: mongoose.connection
 };
-
-//database.init() 시 여기로 넘어온다.
+// database.init(app, config) 서버가 실행되면서 config 안에 있는 자료를 통해 구성된 db를 연결과 동시에 실행한다.
+//database.init() 시 여기로 넘어온다. 여기서 계속 쓰이는 config는 node_02_t.js 에서 만들었던 변수인 let config = require('./config/config')이다.
 database.init = function(app, config){
     console.log('database.init() 호출');
     connect(app, config);
@@ -24,6 +24,7 @@ function connect(app, config){
     database.db.on('error', console.error.bind(console, 'mongoose connection error.'));
     database.db.on('open', () => {
         console.log('데이터베이스 연결 성공! ');
+        //우리가 만든 createSchema 메소드 밑에 정의됨
         createSchema(app, config);
     });
     // 만약 데이터베이스가 끊어지는 상황이 발생하면(이벤트), connect 다시 연결해줘라

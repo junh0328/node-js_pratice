@@ -23,6 +23,7 @@ let router = express.Router();
 app.use(bodyParser.urlencoded({ extended: false }));
 // /public이라는 명령어를 치면 현재디렉토리와 'public' 폴더를 연결합니다.
 app.use('/public', static(path.join(__dirname, 'public')));
+// loger('dev') : 요청에 대한 정보를 콘솔에 기록해줍니다.
 app.use(logger('dev'));
 // 제일 상위루트에 라우터를 등록합니다.
 app.use('/', router);

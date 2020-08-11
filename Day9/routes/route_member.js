@@ -45,4 +45,7 @@ module.exports =function(router, passport){
         req.logout();
         res.redirect('/');
     });
+    router.route('/list').get((req, res) =>{
+        res.render('list.ejs')
+    });
 }

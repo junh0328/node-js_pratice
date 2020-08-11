@@ -28,7 +28,9 @@ app.use(expressSession({
 app.use(passport.initialize()); // initialize() 함수롤 호출하면 사용할 수 있다.
 app.use(passport.session());
 app.use(bodyParser.urlencoded({extended:false}));
+// /public이라는 명령어를 치면 현재디렉토리와 'public' 폴더를 연결합니다.
 app.use('/public', static(path.join(__dirname, 'public')));
+// loger('dev') : 요청에 대한 정보를 콘솔에 기록해줍니다.
 app.use(logger('dev'));
 app.use('/', router);
 
@@ -45,6 +47,7 @@ app.set('views', __dirname+'/views');
 app.set('view engine', 'ejs');
 
 /* db 설정 파일 불러오기 */
+// 몽고디비를 연결한 주소와, 컬렉션, 스키마에 대한 정의를 하는 곳이다.
 let config = require('./config/config');
 
 /* db를 만들어 연결*/
