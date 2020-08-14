@@ -452,7 +452,7 @@ app.use(static(path.join(__dirname, 'public')));   1.퍼블릭 폴더를 기본 
 app.get('/rain', (req,res) =>{			1. 기본주소/rain 이라는 값을 클라이언트에게 요청받으면
     res.send("hello rain, <img src='/rainy.png'>");	2. "hello rain"이라는 문자열과 이미지를 응답(전송)한다.
 });						
-
+s
 ●●●●●●●●●●7. multer 모듈●●●●●●●●●●
 익스프레스에서 파일을 업로드하기 위한 미들웨어입니다.
 const multer = require('multer');
