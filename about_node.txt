@@ -607,7 +607,7 @@ PUG 문법 : http://jade-lang.com/
 1.
 let 선언할 변수명 = require('불러올 파일주소')
 >> let config = require('./config/config') // 기본 확장자가 js이므로 실제 파일 이름은 config.js이지만, js를 붙일 필요가 없다.
-
+(..): 부모 폴더 / (.) 내가있는 폴더
 불러올 파일 주소에 있는 파일은 module.exports = {} 를 포함될 기능을 담는다.
 
 ---------------------config.js ---------------------
@@ -667,7 +667,33 @@ function createSchema(app, config){    let schemaLen = config.db_schemas.length;
 }
 
 module.exports = database;
+------------------------노드 내장 객체 알아보기---------------------------
+●●●●●●●●1. global 객체●●●●●●●●
+- 노드의 전역 객체
+> 브라우저의 window 같은 역할
+> 모든 파일에 접근 가능
+> window처럼 생략도 가능 (console, require도 global의 속성)
+ex) global.setTimeOut() , global.console.log() ....
 
+●●●●●●●●2. console 객체●●●●●●●●
+- 브라우저의  console 객체와 매우 유사
+> console.time, console.timeEnd: 시간 로깅
+> console.error : 에러 로깅
+> console.log : 평범한 로그
+> console.dir : 객체 로깅
+> console.trace : 호출스택 로깅 (함수 안에서 쓰면 호출스택을 보여준다.)
+
+●●●●●●●●3. 타이머 객체●●●●●●●●
+- set <-> clear의 대응
+> set 메서드의 리턴 값을 clear 메서드에 넣어 취소
+*밀리초 1,000(밀리초) = 1(초)
+> setTimeout(콜백함수, 밀리초) : 밀리초 이후에 콜백함수를 실행
+> setInterval(콜백함수, 밀리초) : 주어진 밀리초마다 콜백 함수를 반복 실행
+> setImmediate(콜백함수) : 콜백 함수를 즉시 실행
+
+> clearTimeout(아이디) : setTimeout을 취소합니다.
+> clearInterval(아이디) : setInterval을 취소합니다.
+> clearImmediate(아이디) : setImmediate를 취소합니다.
 
 ---------------------------------------------------------------------------
 실제 프로젝트시 설계 방향 (몽고 디비를 활용한 페이지 생성)
@@ -688,17 +714,3 @@ views 폴더 > 화면 보여줄 것들 (회원가입, 회원가입 후 로그인
 - login.ejs
 - profile.ejs
 - signup.ejs
-
-
-
-
-
-
-
-
-
-
-
-
-
-
