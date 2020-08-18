@@ -698,18 +698,21 @@ ex) global.setTimeOut() , global.console.log() ....
 ---------------------------------------------------------------------------
 실제 프로젝트시 설계 방향 (몽고 디비를 활용한 페이지 생성)
 
-config 폴더 > 전체적인 세팅할 것
+●config 폴더 > 전체적인 세팅할 것
 - config.js : 서버포트, db연결
-- passport.js : 
->>passport 폴더
-- local_login.js :
-- local_signup.js :
-public 폴더 > 일반 html 페이지
+- passport.js : 사용자 인증, ./passport 폴더 하위의 local_login.js 또는 local_signup.js로 보내줌
+○○passport 폴더 
+- local_login.js : 로컬계정 로그인을 위한 페이지
+- local_signup.js : 로켈계정 회원가입을 위한 페이지
+●database 폴더 > 데이터베이스와 연동 및 스키마 구현
+- database.js : 
+- member_schema.js :
+●public 폴더 > 일반 html 페이지
 = 404.html : 
-routes 폴더 > action을 처리하는 폴더 (어떤 페이지로 이동)
+●routes 폴더 > action을 처리하는 폴더 (어떤 페이지로 이동)
 - route_loader.js :
 - route_user.js :
-views 폴더 > 화면 보여줄 것들 (회원가입, 회원가입 후 로그인 페이지, 프로필 페이지)
+●views 폴더 > 화면 보여줄 것들 (회원가입, 회원가입 후 로그인 페이지, 프로필 페이지)
 - index.ejs
 - login.ejs
 - profile.ejs
