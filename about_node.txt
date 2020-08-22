@@ -116,6 +116,10 @@ console.log('querystring.stringfy():', querystring.stringfy(query));
 querystring.parse() : { page : '3', limit : '10', category : ['nodejs', 'javascript'] }
 querystring.stringfy() :  page=3&limit=10&category=nodejs&category=javascript
 
+* req.query.변수 <-> req.params.변수의 차이
+path 방식으로 sementic url을 사용하여 받는다면 params를 사용해야 하고, ex)localhost:3000/topic/0 <-> topics[req.params.id]
+queryString으로 접근하기 위해서는 query를 사용해야 한다.		ex)localhost:3000/topic?id=0 <-> topics[req.query.id]
+
 3.6.2 버퍼와 스트림 이해하기
  파일을 읽거나 쓰는 방식에는 크게 두 가지 방식, 즉 버퍼를 이용하는 방식과 스트림을 이용하는 방식이 있습니다.
 버퍼링은 영상을 재생할 수 있을 때까지 데이터를 모으는 동작이고, 스트리밍은 방송인의 컴퓨터에서 시청자의 컴퓨터로 영상 데이터를 조금씩 전송하는 동작입니다.
@@ -162,7 +166,7 @@ npm에 업로드된 노드 모듈을 패키지라고 부릅니다.
 이런 관계를 의존관계라고 부릅니다.
 
 6.3.3 body-parser
-body=parser는 요청의 본문을 해석해주는 미들웨어입니다.
+body-parser는 요청의 본문을 해석해주는 미들웨어입니다.
 보통 폼 데이터나 AJAX 요청의 데이터를 처리합니다.
 
 const bodyParser = require('body-parser');
