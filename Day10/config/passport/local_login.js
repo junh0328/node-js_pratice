@@ -1,7 +1,6 @@
 let LocalStrategy = require('passport-local').Strategy;
 
 module.exports = new LocalStrategy({
-
     // local_signup.js 에서 만든 내용을 우리가 만든 콜렉션에 저장하고, 해당 콜렉션에 저장된 내용과 비교하여 계정의 여부를 파악하고 로그인 시킨다.
     usernameField: 'userid',
     passwordField: 'password',
