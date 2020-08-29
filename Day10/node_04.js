@@ -67,6 +67,7 @@ configPassport(app, passport);
 
 
 let userPassport=require('./routes/route_member');
+const { login } = require('passport/lib/http/request');
 userPassport(router, passport);
 
 const server = app.listen(port, ()=>{
@@ -79,11 +80,27 @@ const server = app.listen(port, ()=>{
 const io = socketio.listen(server);
 console.log('socket.io 요청을 받을 준비 완료!');
 
+login_ids = {};
+
 io.sockets.on('connection', (socket)=>{
     //peername : 접속자의 이름
     console.log('connection : ', socket.request.connection._peername);
     socket.remoteAddress = socket.request.connection._peername.address;
     socket.remotePort = socket.request.connection._peername.port;
+
+    socket.on('login', function(login){
+        console.log('로그인 이벤트를 받았습니다.');
+        console.log(login);
+
+        console.log('접속한 소켓의 id : ' + socket.id);
+        login_ids[login.id] = socket.id;
+        socket.login_id = login.id;
+
+        console.log('접속한 클라이언트 id 갯수 : %d', Object.keys(login_ids).length);
+        sendResponse(socket, 'login', '200', '로그인되었습니다.');
+
+    });
+
 
     socket.on('message', function(message){
         console.log('message 이벤트를 받았습니다.');
@@ -92,6 +109,18 @@ io.sockets.on('connection', (socket)=>{
         if(message.recepient == 'ALL'){
             console.log('나를 포함한 모든 클라이언트에게 message 이벤트를 전송합니다.');
             io.sockets.emit('message', message);
+        }else{
+            if(login_ids[message.recepient]){
+                io.sockets.connection[login_ids[message.recepient]].emit('message', message);
+                sendResponse(socket, 'message', '200', '메세지를 전송했습니다.');
+            }else{
+                sendResponse(socket, 'login', '404', '상대방이 로그인하지 않았습니다.');
+            }
         }
     });
 });
+
+function sendResponse(socket, command, code, message){
+    let statusObj = {command:command, code:code, message:message};
+    socket.emit('response', statusObj);
+}
