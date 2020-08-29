@@ -8,5 +8,5 @@ module.exports = {
         clientID: '731377644109245',
         clientSecret: 'dea22176af8b9cbe99b70c7edd6eda37',
         callbackURL: 'http://localhost:3000/auth/facebook/callback'
-    }
+    } 
 }
