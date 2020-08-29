@@ -41,6 +41,17 @@ module.exports =function(router, passport){
         }
     });
 
+    //scope 범위 [req에게 받고 싶은 자료 프로필과 이메일을 받겠다]
+    router.route('/auth/facebook').get(passport.authenticate('facebook', {
+        scope: ['public_profile', 'email']
+    }));
+
+    router.route('/auth/facebook/callback').get(passport.authenticate('facebook',{
+        successRedirect: '/profile',
+        failureRedirect: '/'
+    }));
+
+
     router.route('/logout').get((req, res) => {
         req.logout();
         res.redirect('/');

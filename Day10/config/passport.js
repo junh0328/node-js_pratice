@@ -17,5 +17,5 @@ module.exports = function(app, passport){
 
     passport.use('local-login', local_login);
     passport.use('local-signup', local_signup);
-    passport.user('facebook', facebook(app, passport));
+    passport.use('facebook', facebook(app, passport));
 }

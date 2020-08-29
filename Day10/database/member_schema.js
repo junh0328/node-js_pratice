@@ -9,14 +9,17 @@ Schema.createSchema = function(mongoose){
         // userid의 아이디가 틀리면 에러를 만들기 위해 required : true를 설정
         userid: {type: String, required: true, default:''},
         // hashed_password : 몽구스에서 암호화시킬 때, 특별한 랜덤키를 만들어 내가 집어넣은 패스워드와 결합시켜 묶어서 저장한다. 그때마다 랜덤한 값이 틀리므로 매번 다르게 비밀번호를 가질 수 있다. hash는 단방향 암호화이므로 복호화가 되지 않는다. 
-        hashed_password: {type: String, required: true, default:''},
+        hashed_password: {type: String, default:''},
         name: {type: String, default:''},
         //salt : 암호화 키, 랜덤한 값을 salt에 저장한다.
-        salt: {type: String, required: true},
+        salt: {type: String},
         // created_ at : 데이터가 들어간 날짜 시간
         age: {type: Number, default: ''},
         created_at: {type: Date, default: Date.now},
-        updated_at: {type: Date, default: Date.now}
+        updated_at: {type: Date, default: Date.now},
+        provider: {type: String, default: ''},
+        authToken: {type: String, default: ''},
+        facebook: {},
     });
 
     // virtual() : 가상으 필드를 만들겠다.
@@ -76,20 +79,21 @@ Schema.createSchema = function(mongoose){
     MemberSchema.pre('save', (next) => {
         // 객체 안에는 isNew라는 제공되는 필드가 있는데, 새로 들어가는 필드가 아닐 때 다음과 같이 실행하라.
         if(!this.isNew) return next();
-        if(!validatePresenceOf(this.password)){
-            next(new Error('유효하지 않은 password 필드입니다.'));
-        }else{
-            next();
-        }
+        // if(!validatePresenceOf(this.password)){
+        //     next(new Error('유효하지 않은 password 필드입니다.'));
+        // }else{
+        //     next();
+        // }
+        next();
     });
 
     MemberSchema.path('userid').validate((userid) => {
         return userid.length;
     }, 'userid 컬럼의 값이 없습니다.');
 
-    MemberSchema.path('hashed_password').validate((hashed_password) =>{
-        return hashed_password.length;
-    }, 'hashed_password 컬럼의 값이 없습니다.');
+    // MemberSchema.path('hashed_password').validate((hashed_password) =>{
+    //     return hashed_password.length;
+    // }, 'hashed_password 컬럼의 값이 없습니다.');
 
     MemberSchema.static('findByUserid', (userid, callback) => {
         return this.find({userid: userid}, callback);

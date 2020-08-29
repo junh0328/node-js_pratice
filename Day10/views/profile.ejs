@@ -16,7 +16,11 @@
     <h2>프로필</h2>
     <p>아이디 : <%=user.userid%></p>
     <p>이름 : <%=user.name%></p>
+<% if (user.provider == 'facebook'){ %>
+    </p>
+<% } else { %>
     <p>나이 : <%=user.age%></p>
+<% } %> 
     <p><a href="/logout">로그아웃</a></p>
     <p><a href="/list">★ 가입된 다른 사용자 보기 ★</a></p>
 </body>
