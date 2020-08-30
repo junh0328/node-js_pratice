@@ -80,7 +80,7 @@ const server = app.listen(port, ()=>{
 const io = socketio.listen(server);
 console.log('socket.io 요청을 받을 준비 완료!');
 
-login_ids = {};
+let login_ids = {};
 
 io.sockets.on('connection', (socket)=>{
     //peername : 접속자의 이름
@@ -111,7 +111,7 @@ io.sockets.on('connection', (socket)=>{
             io.sockets.emit('message', message);
         }else{
             if(login_ids[message.recepient]){
-                io.sockets.connection[login_ids[message.recepient]].emit('message', message);
+                io.sockets.connected[login_ids[message.recepient]].emit('message', message);
                 sendResponse(socket, 'message', '200', '메세지를 전송했습니다.');
             }else{
                 sendResponse(socket, 'login', '404', '상대방이 로그인하지 않았습니다.');
