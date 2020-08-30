@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <style>
+       body { background-color: rgba(212, 97, 97, 0.931);}
+        h2, p { text-align: center; color: white;}
+        h2 {font-size: 50px; color: white;}
+        a { color: white; font-size: 20px; text-decoration: none;}
+        
+    </style>
+</head>
+<body>
+    <h2>로그인</h2>
+    <form action="/login" method="POST">
+    <p><label>아이디 : <input type="text" name="userid"></label></p>
+    <p><label>비밀번호 : <input type="password" name="password"></label></p>
+    <p><button type="submit">로그인</button></p>
+    </form>
+    <p><a href="/auth/facebook"><img src="/public/facebook.png">페이스북으로 로그인</a></p>
+    <p>계정이 없으신가요? <a href="/signup">회원가입</a> | <a href="/">메인으로</a></p>
+</body>
+</html>

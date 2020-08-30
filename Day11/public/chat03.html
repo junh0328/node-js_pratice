@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>채팅 클라이언트</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src= "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script>
+        let host;
+        let port;
+        let socket;
+        $(function(){
+            $("#connectButton").on("click", function(event){
+                console.log('connectButton이 클릭됨');
+                host = $('#hostInput').val();
+                port = $('#portInput').val();
+                connectToServer();
+            });
+            $("#sendButton").on('click', function(event){
+                const sender = $('#sender').val();
+                const recepient = $('#recepientInput').val();
+                const data = $('#dataInput').val();
+                // 키 : 값 >>>>  필드 , 받아온 값
+                const output = {sender:sender, recepient:recepient, command:'chat', type:'text', data:data};
+                console.log(`서버로 보낼 데이터 : ${JSON.stringify(output)}`);
+                if(socket == undefined){
+                    alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요');
+                    return;
+                }
+                // 소켓이 정의가 되어있다면, message에 output을 넣어 이벤트를 발생시킨다.
+                socket.emit('message', output);
+            });
+            $("#loginButton").on('click', function(event){
+                let id = $('#idInput').val();
+                let password = $('#passwordInput').val();
+
+                let output = {id:id, password:password};
+                console.log(`서버로 보낼 데이터 : ${JSON.stringify(output)}`);
+
+                if(socket == undefined){
+                    alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요');
+                    return;
+                }
+                // 소켓이 정의가 되어있다면, login에 output을 넣어 이벤트를 발생시킨다.
+                socket.emit('login', output);
+            });
+        });
+
+        function connectToServer(){
+            console.log('connectToServer 호출됨');
+            const url = 'http://' + host + ":" + port;
+            socket = io.connect(url);
+            console.log('socket 객체 생성');
+            socket.on('connect', function(){
+                console.log('웹소켓 서버에 연결되었습니다. (' + url + ')' );
+                println(' 웹소켓 서버에 연결되었습니다. (' + url + ')');
+
+                socket.on('message', function(message){
+                    console.log(JSON.stringify(message));
+                    console.log(`수신 메세지 : ${message.sender}, ${message.recepient}, ${message.command}, ${message.data}`);
+                    println(`<p>수신 메세지 : ${message.sender}, ${message.recepient}, ${message.command}, ${message.data}</p>`)
+                })
+
+            });
+            socket.on('disconnect', function(){
+                console.log('웹소켓 연결이 종료되었습니다..');
+                println('웹소켓 연결이 종료되었습니다..');
+            });
+            
+            function println(data){
+                $('#result').append('<p>' + data + '</p>');
+            }
+        };
+    </script>
+</head>
+<body>
+    <h2>채팅 클라이언트</h2>
+    <hr>
+    <p><input type="text" id="hostInput" value="localhost"></p>
+    <p><input type="text" id="portInput" value="3000"></p>
+    <p><input type="button" id="connectButton" value="서버접속"></p>
+    <hr>
+    <p><input type="text" id="idInput"></p>
+    <p><input type="password" id="passwordInput"></p>
+    <p><input type="button" id="loginButton" value="로그인"></p>
+    <p><input type="button" id="logoutButton" value="로그아웃"></p>
+    <hr>
+    <p>보내는 사람 아이디 : <input type="text" id="sender" value="apple"></p>
+    <p>받는 사람 아이디 : <input type="text" id="recepientInput" value="ALL"></p>
+    <p>채팅 내용 : <input type="text" id="dataInput"></p>
+    <p><input type="button" id="sendButton" value="메시지 전송"></p>
+    <hr>
+    <p>결과 : </p>
+    <div id="result"></div>
+</body>
+</html>
