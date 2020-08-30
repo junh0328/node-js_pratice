@@ -69,6 +69,7 @@ configPassport(app, passport);
 let userPassport=require('./routes/route_member');
 const { login } = require('passport/lib/http/request');
 const { Console } = require('console');
+const { send } = require('process');
 userPassport(router, passport);
 
 const server = app.listen(port, ()=>{
@@ -111,11 +112,16 @@ io.sockets.on('connection', (socket)=>{
             console.log('나를 포함한 모든 클라이언트에게 message 이벤트를 전송합니다.');
             io.sockets.emit('message', message);
         }else{
-            if(login_ids[message.recepient]){
-                io.sockets.connected[login_ids[message.recepient]].emit('message', message);
-                sendResponse(socket, 'message', '200', '메세지를 전송했습니다.');
-            }else{
-                sendResponse(socket, 'login', '404', '상대방이 로그인하지 않았습니다.');
+            if(message.command == 'chat'){
+                if(login_ids[message.recepient]){
+                    io.sockets.connected[login_ids[message.recepient]].emit('message', message);
+                    sendResponse(socket, 'message', '200', '메세지를 전송했습니다.');
+                }else{
+                    sendResponse(socket, 'login', '404', '상대방이 로그인하지 않았습니다.');
+                }
+            }else if(message.command == 'groupchat'){
+                io.sockets.in(message.recepient).emit('message', message);
+                sendResponse(socket, 'message', '200', '방[' + message.recepient + ']의 방 사용자들에게 메세지를 전송했습니다.' );
             }
         }
     });
@@ -150,12 +156,21 @@ io.sockets.on('connection', (socket)=>{
             }else{
                 console.log('방이 만들어져 있지 않습니다.');
             }
+        }else if(room.command== 'join'){
+            console.log('join 됨');
+            socket.join(room.roomId);
+            sendResponse(socket, 'room', '200', '방에 입장하였습니다.');
+        }else if(room.command== 'leave'){
+            console.log('leave 됨');
+            socket.leave(room.roomId);
+            sendResponse(socket, 'toom', '200', '방에서 나갔습니다.')
         }else{
             console.log('command가 적용되지 않았습니다.');
         }
         let roomList = getRoomList();
         let output = {command:'list', rooms: roomList};
         console.log(`클라이언트로 보낼 데이터 : ${JSON.stringify(output)}`);
+        // console.dir(output);
         io.sockets.emit('room', output);
     })
     
